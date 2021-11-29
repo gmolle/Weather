@@ -1,0 +1,258 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+$primary-color: #d66c05;
+$primary-color-light: #ff8308;
+
+$dark-color: gray;
+$dark-color-lighter: lightgray;
+
+$transition: 0.15s all ease-in-out;
+
+$breakpoint-lg: 992px;
+
+@mixin flex-and-direction($direction) {
+  display: flex;
+  flex-direction: $direction;
+}
+
+.weather {
+  min-height: 100vh;
+  max-width: 100vw;
+  background-image: url(../../images/cloud.webp);
+  background-position: 0% 20%;
+  background-size: cover;
+  @include flex-and-direction(column);
+  position: relative;
+  font-family: "Roboto", sans-serif;
+
+  &__favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 3rem;
+    cursor: pointer;
+
+    &:hover path {
+      color: $primary-color-light;
+    }
+
+    path {
+      color: $primary-color;
+      transition: $transition;
+    }
+  }
+
+  &__favorite.favorited {
+    path {
+      color: $primary-color-light;
+    }
+
+    &:hover path {
+      color: $primary-color;
+    }
+  }
+
+  &__main {
+    padding: 0.5rem;
+    @include flex-and-direction(column);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    position: relative;
+    min-height: 250px;
+
+    &__temp {
+      font-size: 3rem;
+    }
+
+    &__time {
+      margin-bottom: -20px;
+      text-align: left;
+    }
+
+    img {
+      height: 100px;
+      width: 100px;
+    }
+
+    &__desc {
+      margin-top: -15px;
+      margin-bottom: 10px;
+    }
+
+    &__location {
+      font-family: "Space Mono";
+    }
+  }
+
+  &__forecasts {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(30px);
+    min-height: calc(100vh - 250px);
+  }
+
+  &__hourly__forecasts {
+    @include flex-and-direction(row);
+    overflow-x: scroll;
+    padding: 0rem 0.25rem 1rem;
+    max-width: 100%;
+  }
+
+  &__hourly {
+    @include flex-and-direction(column);
+    justify-content: center;
+    align-items: center;
+
+    p:first-of-type {
+      margin-bottom: -10px;
+    }
+
+    &__desc {
+      margin-top: 10px;
+    }
+
+    img {
+      height: 100px;
+      width: 100px;
+    }
+  }
+
+  &__details {
+    display: none;
+  }
+
+  &__daily__forecasts {
+    padding: 1rem 0.25rem;
+  }
+
+  &__daily {
+    @include flex-and-direction(row);
+    justify-content: space-around;
+    align-items: center;
+
+    &__day {
+      width: 100px;
+    }
+
+    img {
+      width: 10%;
+    }
+  }
+
+  &__search {
+    @include flex-and-direction(row);
+    gap: 0.25rem;
+    padding: 2rem 0.5rem;
+    position: relative;
+
+    input {
+      color: white;
+      padding: 0 0.25rem;
+      flex-grow: 1;
+      border: none;
+      background: transparent;
+      border-bottom: 1px solid $dark-color;
+      margin-right: 50px;
+
+      &::placeholder {
+        color: $dark-color-lighter;
+      }
+    }
+
+    button {
+      border: none;
+      padding: 1rem;
+      background: $primary-color;
+      cursor: pointer;
+      transition: $transition;
+
+      &:hover {
+        background: $primary-color-light;
+      }
+
+      > * {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (min-width: $breakpoint-lg) {
+  .weather {
+    max-height: 100vh;
+    flex-direction: row;
+
+    &__main {
+      flex-grow: 1;
+      justify-content: flex-start;
+      align-items: flex-end;
+      flex-direction: row;
+      margin-bottom: 20vh;
+      margin-left: 10vw;
+      gap: 0px;
+
+      img {
+        margin-bottom: -20px;
+      }
+
+      &__temp {
+        font-size: 6rem;
+        margin-bottom: -10px;
+        line-height: 1.1;
+      }
+
+      &__time {
+        margin-bottom: 0px;
+        font-size: 1.1rem;
+        letter-spacing: 0.6px;
+      }
+
+      &__location {
+        font-size: 3.5rem;
+        text-align: left;
+      }
+
+      &__desc {
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+    }
+
+    &__forecasts {
+      width: 30%;
+      overflow-y: scroll;
+    }
+
+    &__daily {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      place-items: center;
+
+      img {
+        width: 75px;
+        height: 75px;
+      }
+    }
+
+    &__details {
+      @include flex-and-direction(column);
+      margin: 1rem;
+      padding: 4rem 0 4rem 0;
+      gap: 35px;
+      border-bottom: 1px solid $dark-color;
+      border-top: 1px solid $dark-color;
+
+      div {
+        @include flex-and-direction(row);
+        justify-content: space-between;
+      }
+
+      .header {
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+    }
+  }
+}
