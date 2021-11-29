@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { fetchTodaysWeather, fetchTodaysWeatherCoords, fetchWeatherForecast, setCity } from "./weatherSlice"
@@ -9,30 +9,37 @@ import WeatherMainSection from "../../common/weather/WeatherMainSection"
 const Weather = () => {
   const dispatch = useDispatch()
   const {todayStatus} = useSelector(state => state.weather)
+  const [test, setTest] = useState({})
 
   // If location preference is stored in local storage => set city state to the storage values => get weather
   // If location preference is not stored, use geolocation to get weather
   // If users location is turned off, get weather with the default values
+
+  // Possible issue with actually getting location on iOS and/or Safari.
+  // Seems to always default to the final else statement even with location setting turned on
   useEffect(() => {
     if(localStorage.getItem('city') ) {
       dispatch(setCity(localStorage.getItem('city')))
       dispatch(fetchTodaysWeather())
-    } else {
-      navigator.permissions && navigator.permissions.query({name:'geolocation'})
+    } else if (navigator.permissions) {
+       navigator.permissions.query({name:'geolocation'})
       .then((result) => {
         if (result.state === 'granted') {
-          navigator?.geolocation?.getCurrentPosition(pos => {
-             dispatch(fetchTodaysWeatherCoords({lat: pos.coords.latitude, lon: pos.coords.longitude})) 
+          navigator.geolocation.getCurrentPosition(pos => {
+             dispatch(fetchTodaysWeatherCoords({lat: pos.coords.latitude, lon: pos.coords.longitude}))
+             setTest({lat: pos.coords.latitude, lon: pos.coords.longitude})
           }, (error) => {
-            dispatch(fetchTodaysWeather())
+            console.log(error)
           });
         } else {
           dispatch(fetchTodaysWeather())
         }
         }, (error) => {
-          dispatch(fetchTodaysWeather())
+          console.log(error)
         }
       )
+    } else {
+      dispatch(fetchTodaysWeather())
     }
   }, [dispatch])
 
@@ -45,7 +52,7 @@ const Weather = () => {
 
   return (
     <div className='weather'>
-      {/* {forecastStatus !== 'idle' ? <Loader /> : <WeatherMainSection />} */}
+    {test.lat}{test.lon}
       <WeatherMainSection />
     </div>
   )

@@ -47,8 +47,8 @@ const WeatherMainSection = () => {
 
   // If either current weather or forecasted weather is rejected, display toast to alert the user of the rejection
   useEffect(() => {
-     if(todayStatus === 'rejected' || forecastStatus === 'rejected') {
-      toast.error('City not found', {theme: 'dark'})
+     if(todayStatus === 'rejected') {
+      toast.error('City not found', {theme: 'dark', toastId: 'city-error'})
     }
   }, [todayStatus, forecastStatus])
 
@@ -80,7 +80,7 @@ const WeatherMainSection = () => {
   return (
     <>
       <div className='weather__main'>
-      {todayStatus !== 'idle' ? <Loader/> :
+      {(todayStatus !== 'idle' && forecastStatus !== 'idle') ? <Loader/> :
       <>
         <h1 className='weather__main__temp'>{Math.round(todaysWeather?.main?.temp)}&deg;</h1>
         <div className='weather__main__locationtime'>

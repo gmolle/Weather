@@ -19,7 +19,7 @@ const LocationSearch = () => {
   }
 
   return (
-    <form className='weather__search' onKeyDown={e => e.key === 'Enter' && getWeather()}>
+    <form action="" className='weather__search' onKeyDown={e => e.key === 'Enter' && getWeather()}>
       <input 
         type="text" 
         placeholder='City' 
