@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { fetchTodaysWeather, fetchTodaysWeatherCoords, fetchWeatherForecast, setCity } from "./weatherSlice"
@@ -9,7 +9,6 @@ import WeatherMainSection from "../../common/weather/WeatherMainSection"
 const Weather = () => {
   const dispatch = useDispatch()
   const {todayStatus} = useSelector(state => state.weather)
-  const [test, setTest] = useState({})
 
   // If location preference is stored in local storage => set city state to the storage values => get weather
   // If location preference is not stored, use geolocation to get weather
@@ -27,7 +26,6 @@ const Weather = () => {
         if (result.state === 'granted') {
           navigator.geolocation.getCurrentPosition(pos => {
              dispatch(fetchTodaysWeatherCoords({lat: pos.coords.latitude, lon: pos.coords.longitude}))
-             setTest({lat: pos.coords.latitude, lon: pos.coords.longitude})
           }, (error) => {
             console.log(error)
           });
@@ -52,7 +50,6 @@ const Weather = () => {
 
   return (
     <div className='weather'>
-    {test.lat}{test.lon}
       <WeatherMainSection />
     </div>
   )

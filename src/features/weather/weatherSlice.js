@@ -9,8 +9,8 @@ const initialState = {
   forecastStatus: 'idle',
   todaysWeather: {},
   forecastedWeather: {},
-  currentLat: 40.2464,
-  currentLon: -82.936,
+  currentLat: 0,
+  currentLon: 0,
   city: 'Columbus',
 }
 
@@ -24,7 +24,7 @@ export const fetchTodaysWeather = createAsyncThunk(
   }
 )
 
-// Fetch the current weather by coordinates
+// Fetch the current weather by coordinates - used with geolocation
 export const fetchTodaysWeatherCoords = createAsyncThunk(
   'weather/fetchTodaysWeatherCoords',
     async (location) => {
@@ -43,8 +43,6 @@ export const fetchWeatherForecast = createAsyncThunk(
     return data
   }
 )
-// /onecall?lat=${currentLat}&lon=${currentLon}&exclude=current,minutely&units=imperial&appid=${API_KEY}
-// /forecast?lat=${currentLat}&lon=${currentLon}&appid=${API_KEY}&units=imperial
 
 export const weatherSlice = createSlice({
   name: 'weather',

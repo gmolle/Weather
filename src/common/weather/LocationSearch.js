@@ -1,16 +1,11 @@
 import { Icon } from "@iconify/react"
-import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { fetchTodaysWeather, fetchWeatherForecast, setCity } from "../../features/weather/weatherSlice"
 
 const LocationSearch = () => {
   const dispatch = useDispatch()
-  const {city, todaysWeather} = useSelector(state => state.weather)
-
-  useEffect(() => {
-    // dispatch(setCity(todaysWeather.name))
-  }, [dispatch, todaysWeather.name])
+  const {city} = useSelector(state => state.weather)
 
   // Called when city is searched for in the input field to fetch the new locations weather
   const getWeather = () => {
